@@ -1,5 +1,5 @@
 from selenium import webdriver
-import time
+
 import unittest
 
 
@@ -12,7 +12,6 @@ def func_reg(link):
     browser.find_element_by_css_selector('input[placeholder=\'Input your email\']').send_keys(
         "Smolensk@mail.com")
     browser.find_element_by_css_selector("button.btn").click()
-    time.sleep(1)
     return browser.find_element_by_tag_name("h1").text
 
 
@@ -24,7 +23,6 @@ class TestReg(unittest.TestCase):
     def test_page2(self):
         self.assertEqual(func_reg('http://suninjuly.github.io/registration2.html'),
                          'Congratulations! You have successfully registered!', 'No Reg')
-
 
 if __name__ == "__main__":
     unittest.main()
