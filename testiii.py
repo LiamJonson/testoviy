@@ -1,10 +1,30 @@
-def test_abs1():
-    assert abs(-42) == 42, "Should be absolute value of a number"
+from selenium import webdriver
+import time
+import unittest
 
-def test_abs2():
-    assert abs(-42) == -42, "Should be absolute value of a number"
+
+def func_reg(link):
+    browser = webdriver.Chrome()
+    browser.get(link)
+    browser.find_element_by_class_name('form-control.first').send_keys("Ivan")
+    browser.find_element_by_xpath(
+        '//div[@class=\'first_block\']/descendant::input[@placeholder=\'Input your last name\']').send_keys("Petrov")
+    browser.find_element_by_css_selector('input[placeholder=\'Input your email\']').send_keys(
+        "Smolensk@mail.com")
+    browser.find_element_by_css_selector("button.btn").click()
+    time.sleep(1)
+    return browser.find_element_by_tag_name("h1").text
+
+
+class TestReg(unittest.TestCase):
+    def test_page1(self):
+        self.assertEqual(func_reg('http://suninjuly.github.io/registration1.html'),
+                         'Congratulations! You have successfully registered!', 'No Reg')
+
+    def test_page2(self):
+        self.assertEqual(func_reg('http://suninjuly.github.io/registration2.html'),
+                         'Congratulations! You have successfully registered!', 'No Reg')
+
 
 if __name__ == "__main__":
-    test_abs1()
-    test_abs2()
-    print("Everything passed")
+    unittest.main()
