@@ -1,28 +1,28 @@
+import pytest
 from selenium import webdriver
+import time
+import math
 
-import unittest
-
-
-def func_reg(link):
+@pytest.fixture(scope="function")
+def browser():
+    print("\nstart browser for test..")
     browser = webdriver.Chrome()
+    yield browser
+    print("\nquit browser..")
+    browser.quit()
+
+@pytest.mark.parametrize('link',['https://stepik.org/lesson/236895/step/1',
+        'https://stepik.org/lesson/236896/step/1','https://stepik.org/lesson/236897/step/1','https://stepik.org/lesson/236898/step/1','https://stepik.org/lesson/236899/step/1',
+         'https://stepik.org/lesson/236903/step/1','https://stepik.org/lesson/236904/step/1','https://stepik.org/lesson/236905/step/1'])
+def test_guest(browser, link):
     browser.get(link)
-    browser.find_element_by_class_name('form-control.first').send_keys("Ivan")
-    browser.find_element_by_xpath(
-        '//div[@class=\'first_block\']/descendant::input[@placeholder=\'Input your last name\']').send_keys("Petrov")
-    browser.find_element_by_css_selector('input[placeholder=\'Input your email\']').send_keys(
-        "Smolensk@mail.com")
-    browser.find_element_by_css_selector("button.btn").click()
-    return browser.find_element_by_tag_name("h1").text
+    time.sleep(3)
+    browser.find_element_by_tag_name('textarea').send_keys(str(math.log(int(time.time()))))
+    browser.find_element_by_tag_name("button").click()
+    time.sleep(3)
+    assert 'Correct!' == browser.find_element_by_class_name('smart-hints__hint').text
 
 
-class TestReg(unittest.TestCase):
-    def test_page1(self):
-        self.assertEqual(func_reg('http://suninjuly.github.io/registration1.html'),
-                         'Congratulations! You have successfully registered!', 'No Reg')
 
-    def test_page2(self):
-        self.assertEqual(func_reg('http://suninjuly.github.io/registration2.html'),
-                         'Congratulations! You have successfully registered!', 'No Reg')
 
-if __name__ == "__main__":
-    unittest.main()
+
