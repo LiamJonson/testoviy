@@ -1,4 +1,5 @@
-n = input().split()
-print('%.2f' % (n.count('A')/len(n)))
+a = input().split()
+s = '_'
+print(s.join(a))
 
 
