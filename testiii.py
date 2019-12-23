@@ -1,5 +1,10 @@
-A,B =input(),input()
-print('{} and {} sat in the tree.\n{} had fallen, {} was stolen.\nWhat\'s remaining in the tree?'.format(A,B,A,B))
-
-
+n = input().split()
+kol = {}
+for i in n:
+    if len(i) in kol:
+        kol[len(i)] +=1
+    else:
+        kol[len(i)] = 1
+for i in sorted(kol):
+    print(str(i) + ':' + str(kol[i]))
 
