@@ -1,10 +1,13 @@
-n = input().split()
-kol = {}
-for i in n:
-    if len(i) in kol:
-        kol[len(i)] +=1
-    else:
-        kol[len(i)] = 1
-for i in sorted(kol):
-    print(str(i) + ':' + str(kol[i]))
-
+n = list(map(int, input().split()))
+s = n
+k = []
+for i in range(len(n)-1):
+    g = (s[0]-s[1])
+    m = g if g > 0 else -g
+    k.append(m)
+    s.pop(0)
+h = set(i for i in range(1, len(k)+1))
+if set(k) == set(h):
+    print('Jolly')
+else:
+    print('Not jolly')
