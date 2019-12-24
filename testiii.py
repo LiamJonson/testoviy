@@ -1,13 +1,7 @@
-n = list(map(int, input().split()))
-s = n
-k = []
-for i in range(len(n)-1):
-    g = (s[0]-s[1])
-    m = g if g > 0 else -g
-    k.append(m)
-    s.pop(0)
-h = set(i for i in range(1, len(k)+1))
-if set(k) == set(h):
-    print('Jolly')
-else:
-    print('Not jolly')
+n = input()
+rom_num = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+konv_num = [rom_num[i] for i in n]
+for i in range(len(konv_num) - 1):
+    if konv_num[i] < konv_num[i + 1]:
+        konv_num[i] = konv_num[i] * (-1)
+print(sum(konv_num))
