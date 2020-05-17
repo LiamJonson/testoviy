@@ -1,9 +1,13 @@
-units = {'mile': 1609, 'yard': 0.9144, 'foot': 0.3048, 'inch': 0.0254, 'km': 1000, 'm': 1.0, 'cm': 0.01, 'mm': 0.001}
-v = input().split(' ')
-print(v)
-k = (float(v[0]) * units[v[1]] / units[v[3]])
-print(k)
-print('{:.4E}'.format(k))
-#print('%.2e'%(k))
-#print(a)
+import xlrd
 
+rb = xlrd.open_workbook('trekking1.xlsx')
+sheet = rb.sheet_by_index(0)
+
+vals = [sheet.row_values(rownum) for rownum in range(sheet.nrows)]
+sub = vals[0][1]
+result = {}
+for i in vals[1:]:
+    result[i[0]] = i[1]
+k = sorted(result.items(), key=lambda x: (-x[1], x[0]))
+for j,i in enumerate(k):
+    print(i[0])
