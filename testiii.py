@@ -1,4 +1,3 @@
-
 game_objects = {
     ('wall', 0): {'position': (0, 0), 'passable': False, 'interactable': False, 'char': '#'},
     ('wall', 1): {'position': (0, 1), 'passable': False, 'interactable': False, 'char': '#'},
@@ -44,6 +43,7 @@ def wave_interaction(wave, obj):
 interaction_funs = {
     'player': player_interaction,
     'heatwave': wave_interaction,
+}
 
 def move_objects():
     for i in movements:
@@ -62,12 +62,56 @@ def move_objects():
 
     movements.clear()
 
-
-
-
-
-
-
-
-
 movements = []
+objects_ids_counter = 0
+
+def get_next_counter_value():
+    global objects_ids_counter
+    result = objects_ids_counter
+    objects_ids_counter += 1
+    return result
+new_objects = []
+
+
+def add_new_objects():
+    for i in new_objects:
+        n = get_next_counter_value()
+        k = i[1]
+        k.update({'position': i[2]})
+        print(get_objects_by_coords(i[2]) )
+        if get_objects_by_coords(i[2]) :
+            k = game_objects[get_objects_by_coords(i[2])[0]]
+            print(k)
+            if k['interactable'] == True:
+                game_objects.update({(i[0],n): k})
+            elif k['interactable'] == True:
+                pass
+            else:
+                game_objects.update({(i[0], n): k})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
