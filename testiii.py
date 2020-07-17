@@ -89,7 +89,36 @@ def add_new_objects():
             else:
                 game_objects.update({(i[0], n): k})
 
+obj_types_to_char = {
+    "player": "@", "wall": '#', 'soft_wall': '%', 'heatwave': '+', "bomb": '*', "coin": '$'
+}
 
+
+def create_object(type, position, **kwargs):
+    desc = {'position': position,
+            'passable': type not in ['wall', 'soft_wall'],
+            'interactable': type not in ['wall'],
+            'char': obj_types_to_char[type]
+            }
+    if type == 'player':
+        desc['coins'] = 0
+    if type == 'bomb':
+        desc['power'] = 3
+        desc['life_time'] = 3
+    desc.update(kwargs)
+    return type, desc, position
+
+def load_level(level):
+    game_objects.clear()
+    n = [i for i in level.strip().split('\n')]
+    m = {j: i for i, j in obj_types_to_char.items()}
+    for i,j in enumerate(n):
+        for k, l in enumerate(j):
+            if l == ' ':
+                continue
+            else:
+                new_objects.append((create_object(m[l], (i, k))))
+    add_new_objects()
 
 
 
