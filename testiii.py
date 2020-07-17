@@ -58,8 +58,6 @@ def move_objects():
 
         elif not p:
             game_objects[i[0]].update({'position': i[1]})
-            print(get_objects_by_coords(i[1]))
-
     movements.clear()
 
 movements = []
@@ -70,6 +68,7 @@ def get_next_counter_value():
     result = objects_ids_counter
     objects_ids_counter += 1
     return result
+
 new_objects = []
 
 
@@ -78,16 +77,13 @@ def add_new_objects():
         n = get_next_counter_value()
         k = i[1]
         k.update({'position': i[2]})
-        print(get_objects_by_coords(i[2]) )
-        if get_objects_by_coords(i[2]) :
-            k = game_objects[get_objects_by_coords(i[2])[0]]
-            print(k)
+        if get_objects_by_coords(i[-1]):
+            k = game_objects[get_objects_by_coords(i[-1])[0]]
             if k['interactable'] == True:
                 game_objects.update({(i[0],n): k})
-            elif k['interactable'] == True:
-                pass
-            else:
-                game_objects.update({(i[0], n): k})
+        else:
+            game_objects.update({(i[0], n): k})
+
 
 obj_types_to_char = {
     "player": "@", "wall": '#', 'soft_wall': '%', 'heatwave': '+', "bomb": '*', "coin": '$'
@@ -119,10 +115,64 @@ def load_level(level):
             else:
                 new_objects.append((create_object(m[l], (i, k))))
     add_new_objects()
+    print(game_objects)
+
+level_example = """
+##########
+#@ *%    #
+#   %    #
+#  %%%   #
+# %%$%%  #
+#  %%%   #
+#   %    #
+#   %    #
+#   %    #
+##########
+"""
+
+load_level(level_example)
+
+def idle_logic(_):
+    pass
+
+
+def bomb_logic(bomb_object):
+    for game_object in game_objects:
+        if game_object[0] == 'bomb':
+            if game_objects[game_object]['life_time'] != 0:
+                game_objects[game_object]['life_time'] -= 1
+            else:
+                old_objects.append(game_object)
+                n = game_objects[game_object]['position']
+                new_objects.append(('heatwave', {'passable': True, 'interactable': True, },(n[0],n[1]-1)))
+                new_objects.append(('heatwave', {'passable': True, 'interactable': True, }, (n[0]-1, n[1])))
+                new_objects.append(('heatwave', {'passable': True, 'interactable': True, }, (n[0], n[1])))
+                new_objects.append(('heatwave', {'passable': True, 'interactable': True, }, (n[0], n[1] + 1)))
+                new_objects.append(('heatwave', {'passable': True, 'interactable': True, }, (n[0]+1 , n[1])))
 
 
 
 
+new_objects = [('bomb', {'passable': True, 'interactable': True, 'lifetime': 5}, (1, 1))]
+
+def heatwave_logic(heatwave):
+    for game_object in game_objects:
+        if game_object[0] == 'heatwave':
+            old_objects.append(game_object)
+
+
+object_logics = {
+    'bomb': bomb_logic,
+    'heatwave': heatwave_logic
+}
+
+
+def process_objects_logic():
+    for game_object in game_objects:
+        object_logics.get(game_object[0], idle_logic)(game_object)
+
+process_objects_logic()
+assert all(t == 'heatwave' for t, desc, pos in new_objects)
 
 
 
