@@ -115,7 +115,7 @@ def load_level(level):
             else:
                 new_objects.append((create_object(m[l], (i, k))))
     add_new_objects()
-    print(game_objects)
+
 
 level_example = """
 ##########
@@ -130,10 +130,10 @@ level_example = """
 ##########
 """
 
-load_level(level_example)
 
 def idle_logic(_):
     pass
+
 
 
 def bomb_logic(bomb_object):
@@ -153,7 +153,7 @@ def bomb_logic(bomb_object):
 
 
 
-new_objects = [('bomb', {'passable': True, 'interactable': True, 'lifetime': 5}, (1, 1))]
+
 
 def heatwave_logic(heatwave):
     for game_object in game_objects:
@@ -163,18 +163,24 @@ def heatwave_logic(heatwave):
 
 object_logics = {
     'bomb': bomb_logic,
-    'heatwave': heatwave_logic
-}
-
+    'heatwave': heatwave_logic }
 
 def process_objects_logic():
     for game_object in game_objects:
         object_logics.get(game_object[0], idle_logic)(game_object)
 
-process_objects_logic()
-assert all(t == 'heatwave' for t, desc, pos in new_objects)
 
 
+
+def check_game_state():
+
+    k = [i[0] for i in game_objects.keys()]
+    if 'player' not in k:
+            return "lose"
+    elif 'coin' not in k:
+            return "win"
+    else:
+          return "in_progress"
 
 
 
