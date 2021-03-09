@@ -1,17 +1,24 @@
-﻿def kidds_encryption(text, reverse=False):
-    sl = {'e': '8', 't': ';', 'h': '4', 'o': '‡', 's': ')', 'n': '*', 'a': '5', 'i': '6', 'r': '(',
-          'f': '1', 'd': '†', 'l': '0', 'm': '9', 'b': '2', 'y': ':', 'g': '3', 'u': '?', 'v': '¶', 'c': '-', 'p': '.'}
+﻿def rotor(symbol, n, reverse=False):
+    ROTORS = {0: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+              1: 'EKMFLGDQVZNTOWYHXUSPAIBRCJ',
+              2: 'AJDKSIRUXBLHWTMCQGZNPYFVOE',
+              3: 'BDFHJLCPRTXVZNYEIWGAKMUSQO',
+              4: 'ESOVPZJAYQUIRHXLNFTGKDCMWB',
+              5: 'VZBRGITYUPSDNHLXAWMJQOFECK',
+              6: 'JPGVOUMFYQBENHZRDKASXLICTW',
+              7: 'NZJHGRCXMYSWBOUFAIVLPEKQDT',
+              8: 'FKQHTLXOCBJSPDZRAMEWNIUYGV',
+              'beta': 'LEYJVCNIXWPBQMDRTAKZGFUHOS',
+              'gamma': 'FSOKANUERHMBTIYCWLQPZXVGJD'
+              }
+    if reverse ==True:
+        return ROTORS[0][ROTORS[n].index(symbol)]
 
-    text = text.lower().replace(',', '').replace(' ', '').replace('\'', '').replace('x', '')
-    k = [i for i in text]
-    dec = ''
-    if reverse == True:
-        ty = {j:i for i,j in sl.items()}
-        for i in k:
-            dec += ty[i]
-    for i in k:
-        if i in sl:
-            dec += sl[i]
-    return dec
+    return ROTORS[n][ROTORS[0].index(symbol)]
 
+
+
+
+for i in 'EKMFLGDQVZNTOWYHXUSPAIBRCJ':
+    print((rotor(i, 1,reverse=True)),end='')
 
