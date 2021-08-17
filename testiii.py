@@ -1,13 +1,27 @@
-﻿from math import inf
+﻿import math
+size = int(input())
+H = [int(i) for i in input().split()]
+u = []
+def sitfdown(i):
+    minIndex = i
+    l = 2 * i + 1
+    if l <= size-1 and H[l] < H[minIndex]:
+        minIndex = l
+    z = 2 * i + 2
+    if z <= size-1 and H[z] < H[minIndex]:
+        minIndex = z
+    if i != minIndex:
+        H[i],H[minIndex] = H[minIndex],H[i]
+        u.append([i,minIndex])
+        sitfdown(minIndex)
 
-def f(x):
-    return ((2 * x ** 2) - (3 * x) - 5) / ((3 * x ** 2) + x + 1)
+k = [int(i) for i in range(0,math.ceil(size/2))]
+for i in reversed(k):
+    sitfdown(i)
 
-x0= 0
-dx_list = [1e6, -1e6]
-for dx in dx_list:
-    print((round(f(x0+dx),3)))
-
-
-
-
+if not u:
+    print(0)
+else:
+    print(len(u))
+    for i in u:
+        print(*i)
