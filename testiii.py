@@ -18,7 +18,6 @@ def sitfdown(i):
 k = [int(i) for i in range(0,math.ceil(size/2))]
 for i in reversed(k):
     sitfdown(i)
-
 if not u:
     print(0)
 else:
